@@ -12,5 +12,6 @@ say /spr (chat command)
 
 #### Changelogs
 - Added ReAPI Support
+- Added No Scope SPR
 - Bug fixes
 - Other code optimization
