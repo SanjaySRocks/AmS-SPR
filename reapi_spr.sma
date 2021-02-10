@@ -52,14 +52,15 @@ public plugin_init()
 
 	cvar_prefix = register_cvar("amx_spr_prefix", "[SPR]");
 
-	register_event("SetFOV","zoom","b","1<90") //NoZoom Check
 	register_clcmd("drop", "PlayerDropCheck");
+	register_event("SetFOV","zoom","b","1<90") //NoZoom Check
 	RegisterHam(Ham_Spawn, "player", "SpawnPlayer", 1)
 	register_logevent("SPREndNow", 2, "1=Round_Start")
 	register_logevent("SPREndNow", 2,"1=Round_End") 
-	RegisterHam(Ham_Touch, "weaponbox", "BlockWeapons") 
-	RegisterHam(Ham_Touch, "armoury_entity", "BlockWeapons") 
-	RegisterHam(Ham_Touch, "weapon_shield", "BlockWeapons")
+	RegisterHookChain(RG_CBasePlayer_HasRestrictItem, "Fw_HasRestrictItem_Pre", 0)
+
+
+
 	g_iMaxPlayers = get_maxplayers()
 	get_pcvar_string(cvar_prefix, prefix, charsmax(prefix))
 
@@ -102,7 +103,7 @@ public SPRMenu(id)
 	new menu = menu_create(szMenu, "SPRHandle")
 
 	menu_additem(menu, "Knife round")  //0
-	menu_additem(menu, "Grenade + Knife round")  //1
+	menu_additem(menu, "Grenade + Knife")  //1
 	menu_additem(menu, "Shotgun round")  //2
 	menu_additem(menu, "Deagle round")  //3
 	menu_additem(menu, "AWP round")  //4
@@ -110,7 +111,7 @@ public SPRMenu(id)
 	menu_additem(menu, "M4A1 round")  //6
 	menu_additem(menu, "AK-47 round")  //7
 	menu_additem(menu, "TMP round")  //8
-	menu_additem(menu, "Unlimated Grenades round") //9 
+	menu_additem(menu, "Unlimated Grenades") //9 
 	menu_additem(menu, "Scout round")// 10
 	menu_additem(menu, "No Scope AWP"); // 11
 
@@ -185,7 +186,8 @@ public SPRHandle(id, menu, iItem)
 
 	GiveWeaponToAll()
 	g_sprStarted = true 
-	hideBuyIcon()
+	
+	//server_cmd("mp_buytime 0.0")
 
 	set_dhudmessage(random_num(0,255), random_num(0,255), random_num(0,255), -1.0, 0.0, 0, 6.0, 12.0, 0.1, 0.2)
 	show_dhudmessage(0, "-=[ Special Round Started ]=-")
@@ -335,12 +337,6 @@ public zoom(id) {
 	return PLUGIN_CONTINUE;
 }
 
-// Remove Buy Zone
-public hideBuyIcon() 
-{ 
-	server_cmd("mp_buytime 0.0")
-}
-
 public PlayerDropCheck(id)
 {
 	if(g_sprStarted)
@@ -351,15 +347,17 @@ public PlayerDropCheck(id)
 	return PLUGIN_CONTINUE;
 }
 
-public BlockWeapons(iEnt, id) 
-{ 
+public Fw_HasRestrictItem_Pre(id, ItemID:iItem, ItemRestType:iType)
+{
 	if(g_sprStarted && IsPlayer(id)) 
-	{ 
-		#if defined REMOVE_WEAPONS 
-		set_pev(iEnt, pev_flags, FL_KILLME) 
-		dllfunc(DLLFunc_Think, iEnt) 
-		#endif 
-		return HAM_SUPERCEDE 
-	} 
-	return HAM_IGNORED 
+	{
+		if (iType == ITEM_TYPE_TOUCHED || iType == ITEM_TYPE_BUYING)
+		{
+			if (iItem)
+			{
+				SetHookChainReturn(ATYPE_BOOL, HC_SUPERCEDE) // HC_SUPERCEDE = true
+			}
+		}
+	}
+    return HC_CONTINUE
 }
