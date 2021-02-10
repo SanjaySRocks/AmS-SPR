@@ -7,8 +7,9 @@ CS 1.6 / CZ Plugin
 This Plugin shows a menu that gives specific weapons to all players for a single round
 
 #### Command
-amx_spr
-say /spr (chat command)
+`amx_spr`
+
+`/spr` (chat command)
 
 #### Changelogs
 - Added ReAPI Support
