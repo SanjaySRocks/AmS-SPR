@@ -1,15 +1,15 @@
 # AmS-SPR
-CS 1.6 / CZ Plugin
+CS 1.6 Plugin
 
-#### Version 2.8.1-Final
+[![GitHub release](https://img.shields.io/badge/version-2.8.1--Final-blue)](https://github.com/SanjaySRocks/SpecialRound/archive/main.zip)
 
-#### Description
-This Plugin shows a menu that gives specific weapons to all players for a single round
+#### This Plugin shows a menu that gives specific weapons to all players for a single round
 
 #### Command
-`amx_spr`
-
-`/spr` (chat command)
+```
+amx_spr // Console Command
+/spr // Chat Command
+```
 
 #### Changelogs
 - Added ReAPI Support
