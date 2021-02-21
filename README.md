@@ -1,7 +1,7 @@
 # AmS-SPR
 CS 1.6 Plugin
 
-[![GitHub release](https://img.shields.io/badge/version-2.8.1--Final-blue)](https://github.com/SanjaySRocks/SpecialRound/archive/main.zip)
+[![GitHub release](https://img.shields.io/badge/version-2.8.1--Final-brightgreen)](https://github.com/SanjaySRocks/SpecialRound/archive/main.zip)
 
 #### This Plugin shows a menu that gives specific weapons to all players for a single round
 
